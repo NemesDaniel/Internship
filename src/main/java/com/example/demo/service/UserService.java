@@ -6,6 +6,8 @@ import com.example.demo.repository.UserRepository;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -30,6 +32,8 @@ public class UserService {
     }
 
     public User insertUser(UserDto userDto){
+        String encodedPassword = this.passwordEncoder.encode(userDto.getPassword());
+        userDto.setPassword(encodedPassword);
         userDto.setRole("REGULAR");
         userDto.setCreationDate(Date.from(Instant.now()));
         User user = objectMapper.convertValue(userDto, new TypeReference<User>(){});

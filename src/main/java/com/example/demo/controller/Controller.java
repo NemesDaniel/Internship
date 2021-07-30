@@ -45,7 +45,7 @@ public class Controller {
     }
 
     @PostMapping(value = "/user")
-    public User addUser(@RequestBody UserDto userDto) {
+    public User addUser(@Valid @RequestBody UserDto userDto) throws Exception{
         System.out.println("User created successfully!");
         mailService.sendEmail(userDto);
         return userService.insertUser(userDto);
