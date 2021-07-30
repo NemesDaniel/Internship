@@ -1,20 +1,15 @@
 package com.example.demo.controller;
 
-import ch.qos.logback.core.status.Status;
 import com.example.demo.dto.UserDto;
 import com.example.demo.entity.User;
 import com.example.demo.exception.ResourceNotFoundException;
+import com.example.demo.kafkaService.Producer;
+import com.example.demo.mail.MailService;
 import com.example.demo.service.UserService;
-
+import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-
-import java.util.Date;
-import java.util.List;
-import io.jsonwebtoken.Jwts;
-import java.util.stream.Collectors;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -22,13 +17,23 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Validated
 @RestController
+//@RequestMapping("/api/docs")
 public class Controller {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MailService mailService;
+
+    @Autowired
+    Producer producer;
 
     @Value("${spring.datasource.username}")
     private String datasource;
@@ -42,6 +47,7 @@ public class Controller {
     @PostMapping(value = "/user")
     public User addUser(@RequestBody UserDto userDto) {
         System.out.println("User created successfully!");
+        mailService.sendEmail(userDto);
         return userService.insertUser(userDto);
     }
 
@@ -101,6 +107,11 @@ public class Controller {
             }
         }
         return "Bad credentials, try again!";
+    }
+
+    @PostMapping(value="/post")
+    public void sendMessage(@RequestParam("msg") String msg) {
+        producer.publishToTopic(msg);
     }
 
 

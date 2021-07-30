@@ -22,6 +22,13 @@ public class UserService {
     @Autowired
     private ObjectMapper objectMapper;
 
+    PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository){
+        this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
+
     public User insertUser(UserDto userDto){
         userDto.setRole("REGULAR");
         userDto.setCreationDate(Date.from(Instant.now()));

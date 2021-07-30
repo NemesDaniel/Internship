@@ -1,0 +1,202 @@
+swagger: "2.0"
+info:
+  description: "This is my first swagger API documentation. Enjoy it!"
+  version: "1.0.0"
+  title: "Application"
+host: "localhost:8081"
+schemes:
+  - "http"
+paths:
+  /users:
+    get:
+      tags:
+        - "User"
+      summary: "Return all users as a list"
+      description: "This endpoint returns all users"
+      produces:
+        - "application/json"
+      responses:
+        405:
+          description: "Invalid input"
+  /user:
+    post:
+      tags:
+        - "UserDto"
+      summary: "Create a new user"
+      description: "The endpoint creates an user"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "user"
+          description: "add User"
+          required: true
+          schema:
+            $ref: "#/definitions/UserDto"
+      responses:
+        200:
+          description: "Successful operation"
+          # schema:
+          #   type: "object"
+          #   items:
+          #     $ref: "#/definitions/UserDto"
+        400:
+          description: "The specified user ID is invalid"
+        405:
+          description: "Invalid input"
+    put:
+      tags:
+        - "UserDto"
+      summary: "Update a new user"
+      description: "The endpoint creates an user"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "userDto"
+          in: "body"
+          description: "update User"
+          required: true
+          schema:
+            $ref: "#/definitions/UserDto"
+      responses:
+        200:
+          description: "Successful operation"
+          # schema:
+          #   type: "object"
+          #   items:
+          #     $ref: "#/definitions/UserDto"
+        400:
+          description: "The specified user ID is invalid"
+        405:
+          description: "Invalid input"
+  /user/{id}:
+    get:
+      tags:
+        - "User"
+      summary: "Get an user by ID"
+      description: "The endpoint displays an user"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Unique identifier"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "Succesful operation"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: "The specified user ID is invalid"
+        404:
+          description: "A user with the specified ID was not found"
+        default:
+          description: "Unexpected error"
+
+    delete:
+      tags:
+        - "User"
+      summary: "Delete an user"
+      description: "The endpoint deletes an user"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "Unique identifier"
+          required: true
+          type: "integer"
+
+      responses:
+        204:
+          description: "Deleted successfully"
+        401:
+          description: "id not found"
+        402:
+          description: "Unauthorized"
+
+
+
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      role:
+        type: "string"
+      creationDate:
+        type: "string"
+        format: "dateTime"
+  UserDto:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        format: "int64"
+      username:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      role:
+        type: "string"
+      creationDate:
+        type: "string"
+        format: "dateTime"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
